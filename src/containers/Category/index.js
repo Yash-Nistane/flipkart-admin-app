@@ -49,6 +49,15 @@ const Category = (props) => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+
+    if (!category.loading) {
+        setShow(false);
+    }
+
+}, [category.loading]);
+
+
   // useEffect(() => {
   //   dispatch(getAllCategory());
   // }, []);
@@ -56,10 +65,11 @@ const Category = (props) => {
   const handleClose = () => {
     const form = new FormData();
 
-    // if(categoryName === ""){
-    //   alert("Name is required!");
-    //   return;
-    // }
+    if (categoryName === "") {
+      alert('Category name is required');
+      setShow(false);
+      return;
+  }
 
     form.append("name", categoryName);
     form.append("parentId", parentCategoryId);
@@ -95,6 +105,7 @@ const Category = (props) => {
         value: category._id,
         name: category.name,
         parentId: category.parentId,
+        type: category.type
       });
 
       if (category.children.length > 0) {
@@ -147,6 +158,7 @@ const Category = (props) => {
   const handleCategoryInput = (key, value, index, type) => {
     if(type == "checked"){
       const updatedCheckedArray = checkedArray.map((item, _index) => index == _index ? {...item, [key]: value}: item);
+      console.log("updatedcheckedArray",updatedCheckedArray);
       setCheckedArray(updatedCheckedArray);
     }else if(type == "expanded"){
       const updatedExpandedArray = expandedArray.map((item, _index) => index == _index ? {...item, [key]: value}: item);
@@ -173,13 +185,7 @@ const Category = (props) => {
       form.append('type',item.type);
     });
 
-    dispatch(updateCategories(form))
-    .then(result => {
-      if(result){
-        dispatch(getAllCategory());
-      }
-    })
-
+    dispatch(updateCategories(form));
     setUpdateCategoryModal(false);
 
   }
@@ -203,6 +209,7 @@ const Category = (props) => {
           setDeleteCategoryModal(false);
         }
       });
+      setDeleteCategoryModal(false);
     }
     
   }
@@ -282,8 +289,8 @@ const categoryList = createCategoryList(category.categories);
       
       <AddCategoryModal
                 show={show}
-                handleClose={handleClose}
-                
+                handleClose={() => setShow(false)}
+                onSubmit={handleClose}
                 modalTitle={'Add New Category'}
                 categoryName={categoryName}
                 setCategoryName={setCategoryName}
@@ -295,7 +302,7 @@ const categoryList = createCategoryList(category.categories);
       
       <UpdateCategoriesModal
                 show={updateCategoryModal}
-                handleClose={updateCategoriesForm}
+                handleClose={() => setUpdateCategoryModal(false)}
                 onSubmit={updateCategoriesForm}
                 modalTitle={'Update Categories'}
                 size="lg"

@@ -10,6 +10,7 @@ import { isUserLoggedIn ,getAllCategory,getInitialData} from './actions';
 import Products from './containers/Products';
 import Orders from './containers/Orders';
 import Category from './containers/Category';
+import NewPage from './containers/NewPage';
 
 
 
@@ -25,15 +26,27 @@ const auth = useSelector(state => state.auth);
   useEffect(() =>{
     if(!auth.authenticate){
         dispatch(isUserLoggedIn());
-        dispatch(getInitialData());
+      }
+
+    if(auth.authenticate){
+      dispatch(getInitialData());
     }
-  },[]);
+  },[auth.authenticate]); 
+
+
+// we are adding auth.authenticate in array bcuz app.js 
+// will render only once and at that time auth.authenticate will be false
+// so we are not calling getinitialdata.
+
+// auth.authenticate will become true when user will logged in and we home component is rendered now
+
 
   return (
     <div className="App">
       
         <Switch>
           <PrivateRoute path="/" exact component={Home}/>
+          <PrivateRoute path="/page" exact component={NewPage}/>
           <PrivateRoute path="/products"  component={Products}/>
           <PrivateRoute path="/orders"  component={Orders}/>
           <PrivateRoute path="/category"  component={Category}/>
