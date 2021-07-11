@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import Layout from "../../components/Layout";
 import { Form,Container,Row,Col ,Button} from "react-bootstrap";
 import Input from "../../components/UI/Input";
@@ -22,6 +22,16 @@ const [error, setError] = useState('');
 const auth = useSelector(state =>state.auth);
 const user = useSelector(state =>state.user);
 const dispatch = useDispatch();
+
+
+useEffect(() => {
+    if (!user.loading) {
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+    }
+  }, [user.loading]);
 
 const userSignup = (e) => {
 

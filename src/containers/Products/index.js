@@ -4,7 +4,7 @@ import { Container, Row, Col,Table} from "react-bootstrap";
 import Input from "../../components/UI/Input";
 import Modal from "../../components/UI/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../../actions";
+import { addProduct,deleteProductById } from "../../actions";
 import "./style.css";
 import { generatePublicUrl } from "../../urlConfig";
 
@@ -93,7 +93,21 @@ const Products = (props) => {
                   <td>{product.price}</td>
                   <td>{product.quantity}</td>
                   <td>{product.category.name}</td>
-                  
+                  <td>
+                      <button onClick={() => showProductDetailsModal(product)}>
+                        info
+                      </button>
+                      <button
+                        onClick={() => {
+                          const payload = {
+                            productId: product._id,
+                          };
+                          dispatch(deleteProductById(payload));
+                        }}
+                      >
+                        del
+                      </button>
+                  </td>
                 </tr>
               ))
             : null}
