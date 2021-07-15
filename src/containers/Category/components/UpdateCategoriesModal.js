@@ -67,6 +67,7 @@ const UpdateCategoriesModal = (props) => {
                                 <option value="store">Store</option>
                                 <option value="product">Product</option>
                                 <option value="page">Page</option>
+                                <option value="default">Default</option>
                             </select>
                         </Col>
                     </Row>
@@ -108,6 +109,7 @@ const UpdateCategoriesModal = (props) => {
                                 <option value="store">Store</option>
                                 <option value="product">Product</option>
                                 <option value="page">Page</option>
+                                <option value="default">Default</option>
                             </select>
                         </Col>
                     </Row>

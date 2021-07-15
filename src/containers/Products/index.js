@@ -25,6 +25,7 @@ const Products = (props) => {
   const [productPictures, setProductPictures] = useState([]);
   const [productDetailModal, setProductDetailModal] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
+  const [addProductModal, setAddProductModal] = useState(false);
 
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -44,10 +45,20 @@ const Products = (props) => {
     }
 
     dispatch(addProduct(form));
-    setShow(false);
+    setAddProductModal(false);
+
+    setName("");
+    setQuantity("");
+    setPrice("");
+    setDescription("");
+    setCategoryId("");
+    setProductPictures([]);
+    
   };
 
-  const handleShow = () => setShow(true);
+  
+
+  const handleShow = () => setAddProductModal(true);
 
   const createCategoryList = (categories, options = []) => {
     for (let category of categories) {
@@ -70,6 +81,8 @@ const Products = (props) => {
     ]);
   };
 
+  
+
 
   const renderProducts = () => {
     return (
@@ -87,7 +100,7 @@ const Products = (props) => {
         <tbody>
           {product.products.length > 0
             ? product.products.map((product) => (
-                <tr onClick = {() =>showProductDetailsModal(product)} key={product._id}>
+                <tr key={product._id}>
                   <td>2</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
@@ -102,7 +115,8 @@ const Products = (props) => {
                           const payload = {
                             productId: product._id,
                           };
-                          dispatch(deleteProductById(payload));
+                           dispatch(deleteProductById(payload));
+
                         }}
                       >
                         del
@@ -120,8 +134,9 @@ const Products = (props) => {
   const renderAddProductModal = () =>{
     return (
       <Modal 
-        show={show} 
-        handleClose={handleClose}
+        show={addProductModal} 
+        handleClose={() => setAddProductModal(false)}
+        onSubmit={handleClose}
         modalTitle={"Add New Product"}
       >
         <Input
